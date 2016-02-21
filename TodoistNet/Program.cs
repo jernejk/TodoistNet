@@ -10,7 +10,7 @@ namespace TodoistNet
     {
         static void Main(string[] args)
         {
-            TodoistClient client = new TodoistClient("3e760c167933189705335d1e6077279a998b57c3");
+            TodoistClient client = new TodoistClient("<YOUR_TOKEN>");
 
             var cmd = new TodoistCommand("project_add", new ProjectCommandArgument("Test project"));
             var cmd2 = new TodoistCommand("project_add", new ProjectCommandArgument("Test project 123") { Color = 11, ItemOrder = 5, Indent = 2 });
