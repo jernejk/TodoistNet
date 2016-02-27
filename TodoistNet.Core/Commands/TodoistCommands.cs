@@ -21,7 +21,7 @@
         public const string ItemUpdateDayOrders = "item_update_day_orders";
 
         public const string NoteAdd = "note_add";
-        public const string NoteUpdate = " note_update";
+        public const string NoteUpdate = "note_update";
         public const string NoteDelete = "note_delete";
 
         public const string LabelAdd = "label_add";
