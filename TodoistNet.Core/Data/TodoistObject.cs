@@ -6,6 +6,6 @@ namespace TodoistNet.Core.Data
     public abstract class TodoistObject
     {
         [DataMember(Name = "id")]
-        public long Id { get; set; }
+        public int Id { get; set; }
     }
 }

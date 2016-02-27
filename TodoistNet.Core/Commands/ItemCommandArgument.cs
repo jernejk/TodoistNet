@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace TodoistNet.Core.Data.Commands
+namespace TodoistNet.Core.Commands
 {
     [DataContract]
     public class ItemCommandArgument : TodoistCommandArgument
@@ -12,11 +12,11 @@ namespace TodoistNet.Core.Data.Commands
 
         public ItemCommandArgument(long id)
         {
-            Id = id;
+            Id = id.ToString();
         }
 
         [DataMember(Name = "id", Order = 0, EmitDefaultValue = false)]
-        public long Id { get; set; }
+        public string Id { get; set; }
 
         [DataMember(Name = "content", Order = 0)]
         public string Content { get; set; }

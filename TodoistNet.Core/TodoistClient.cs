@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Threading.Tasks;
 using TodoistNet.Core.Data;
-using TodoistNet.Core.Data.Commands;
+using TodoistNet.Core.Commands;
+using TodoistNet.Core.Helpers;
 
 namespace TodoistNet.Core
 {
@@ -14,65 +11,55 @@ namespace TodoistNet.Core
     {
         private int lastSeqNumber = 0;
         private string token;
-
+        private IJsonSerializer jsonSerializer;
+        private IHttpClient httpClient;
+        
         public TodoistClient(string token)
+            : this(token, new PortableHttpClient(), new PortableDataContractJsonSerializer()) { }
+
+        public TodoistClient(string token, IHttpClient httpClient, IJsonSerializer jsonSerializer)
         {
             this.token = token;
+            this.httpClient = httpClient;
+            this.jsonSerializer = jsonSerializer;
         }
 
-        public async Task<string> GetAllCompletedTasks()
+        public async Task<CompletedItemsResponse> GetAllCompletedTasks(int offset = 0, int limit = 30, int? projectId = null)
         {
             string content = string.Empty;
-            using (HttpClient client = new HttpClient())
+
+            var values = new Dictionary<string, string>
             {
-                HttpRequestMessage message = new HttpRequestMessage();
-                message.Method = new HttpMethod("SYNC");
-                Dictionary<string, string> d = new Dictionary<string, string>
-                    {
-                        ["token"] = token
-                };
+                ["token"] = token,
+                ["limit"] = limit.ToString(),
+                ["offset"] = offset.ToString()
+            };
 
-                message.Content = new FormUrlEncodedContent(d);
-                message.RequestUri = new Uri("https://todoist.com/API/v6/get_all_completed_items");
-                var tasks = await client.SendAsync(message);
-
-                content = await tasks.Content.ReadAsStringAsync();
+            if (projectId.HasValue)
+            {
+                values.Add("project_id", projectId.Value.ToString());
             }
 
-            return content;
+            content = await httpClient.ExecuteRequest(new Uri("https://todoist.com/API/v6/get_all_completed_items"), "SYNC", values);
+
+            return jsonSerializer.Deserialize<CompletedItemsResponse>(content);
         }
 
         public async Task<TodoistResources> GetAllResourcesAsync(bool mapData = true)
         {
-            string content = string.Empty;
-
-            using (HttpClient client = new HttpClient())
+            string content = await httpClient.ExecuteRequest(new Uri("https://todoist.com/API/v6/sync"), "SYNC", new Dictionary<string, string>
             {
-                HttpRequestMessage message = new HttpRequestMessage();
-                message.Method = new HttpMethod("SYNC");
-                Dictionary<string, string> d = new Dictionary<string, string>
-                {
-                    ["token"] = token,
-                    ["seq_no"] = lastSeqNumber.ToString(),
-                    ["resource_types"] = @"[""all""]"
-                };
-
-                message.Content = new FormUrlEncodedContent(d);
-                message.RequestUri = new Uri("https://todoist.com/API/v6/sync");
-
-                try
-                {
-                    var tasks = await client.SendAsync(message);
-                    content = await tasks.Content.ReadAsStringAsync();
-                }
-                catch (Exception exception)
-                {
-                }
-            }
+                ["token"] = token,
+                ["seq_no"] = lastSeqNumber.ToString(),
+                ["resource_types"] = @"[""all""]"
+            });
 
             try
             {
-                var result = Deserialize<TodoistResources>(content);
+                var result = jsonSerializer.Deserialize<TodoistResources>(content);
+                if (result.ContainsErrors)
+                    throw TodoistWebException.GenerateFromHttpErrorCode(result.ErrorCode.Value, null);
+
                 if (result != null && mapData)
                 {
                     MapData.Map(result);
@@ -90,7 +77,7 @@ namespace TodoistNet.Core
 
         public async Task<string> ExecuteCommands(params TodoistCommand[] commands)
         {
-            string json = SearializeCommands(commands);
+            string json = jsonSerializer.Serialize(commands);
 
             string content = await SyncAsync(json);
 
@@ -99,64 +86,13 @@ namespace TodoistNet.Core
 
         private async Task<string> SyncAsync(string json)
         {
-            string content = string.Empty;
-
-            using (HttpClient client = new HttpClient())
+            string content = await httpClient.ExecuteRequest(new Uri("https://todoist.com/API/v6/sync"), "SYNC", new Dictionary<string, string>
             {
-                HttpRequestMessage message = new HttpRequestMessage();
-                message.Method = new HttpMethod("SYNC");
-                Dictionary<string, string> d = new Dictionary<string, string>
-                {
-                    ["token"] = token,
-                    ["commands"] = json
-                };
-
-                message.Content = new FormUrlEncodedContent(d);
-                message.RequestUri = new Uri("https://todoist.com/API/v6/sync");
-
-                try
-                {
-                    var tasks = await client.SendAsync(message);
-                    content = await tasks.Content.ReadAsStringAsync();
-                }
-                catch (Exception exception)
-                {
-                }
-            }
+                ["token"] = token,
+                ["commands"] = json
+            });
 
             return content;
-        }
-
-        private static string SearializeCommands(TodoistCommand[] commands)
-        {
-            string json;
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(TodoistCommand[]), new[] { typeof(ProjectCommandArgument), typeof(ItemCommandArgument) });
-            using (MemoryStream ms = new MemoryStream())
-            {
-                try
-                {
-                    serializer.WriteObject(ms, commands);
-                }
-                catch
-                {
-                }
-                json = Encoding.UTF8.GetString(ms.ToArray());
-            }
-
-            return json;
-        }
-
-        private static T Deserialize<T>(string json) where T : class
-        {
-            T result;
-
-            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-            using (MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(json)))
-            {
-                result = serializer.ReadObject(ms) as T;
-            }
-
-            return result;
         }
     }
 }

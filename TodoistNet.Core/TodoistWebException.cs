@@ -30,7 +30,7 @@ namespace TodoistNet.Core
         {
             string message;
 
-            if (ErrorCodeMessages.ContainsKey(errorCode))
+            if (IsKnownHttpErrorCode(errorCode))
             {
                 message = ErrorCodeMessages[errorCode];
             }
@@ -43,6 +43,11 @@ namespace TodoistNet.Core
             exception.HttpErrorCode = errorCode;
 
             return exception;
+        }
+
+        public static bool IsKnownHttpErrorCode(int errorCode)
+        {
+            return ErrorCodeMessages.ContainsKey(errorCode);
         }
     }
 }

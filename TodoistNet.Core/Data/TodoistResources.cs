@@ -3,12 +3,11 @@
 namespace TodoistNet.Core.Data
 {
     [DataContract]
-    public class TodoistResources
+    public class TodoistResources : TodoistBaseResponse
     {
         // TODO: Implement all commented properties
         //"Collaborators": [],
         //"DayOrdersTimestamp": "1344642991.1",
-        //"Notes": [],
 
         [DataMember(Name = "Notes")]
         public Note[] Notes { get; set; }
@@ -32,7 +31,9 @@ namespace TodoistNet.Core.Data
         public long LiveNotificationsLastRead { get; set; }
 
         //"User": {},
-        //"Filters": [],
+        [DataMember(Name = "Filters")]
+        public Filter[] Filters { get; set; }
+
         [DataMember(Name = "Items")]
         public Item[] Items { get; set; }
 

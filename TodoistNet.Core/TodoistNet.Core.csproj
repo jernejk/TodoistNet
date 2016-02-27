@@ -39,18 +39,27 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\TodoistCommands.cs" />
     <Compile Include="Data\Colors.cs" />
-    <Compile Include="Data\Commands\ItemCommandArgument.cs" />
-    <Compile Include="Data\Commands\ProjectCommandArgument.cs" />
+    <Compile Include="Commands\ItemCommandArgument.cs" />
+    <Compile Include="Commands\LabelCommandArgument.cs" />
+    <Compile Include="Commands\NoteCommandArgument.cs" />
+    <Compile Include="Commands\ProjectCommandArgument.cs" />
+    <Compile Include="Data\CompletedItemsResponse.cs" />
+    <Compile Include="Data\Dictionary.cs" />
     <Compile Include="Data\Filter.cs" />
     <Compile Include="Data\Item.cs" />
     <Compile Include="Data\Label.cs" />
     <Compile Include="Data\Note.cs" />
     <Compile Include="Data\Project.cs" />
-    <Compile Include="Data\Commands\TodoistCommand.cs" />
-    <Compile Include="Data\Commands\TodoistCommandArgument.cs" />
+    <Compile Include="Commands\TodoistCommand.cs" />
+    <Compile Include="Commands\TodoistCommandArgument.cs" />
     <Compile Include="Data\TodoistResources.cs" />
-    <Compile Include="Helpers\TodoistClientHelper.cs" />
+    <Compile Include="Helpers\IHttpClient.cs" />
+    <Compile Include="Helpers\IJsonSerializer.cs" />
+    <Compile Include="Helpers\PortableDataContractJsonSerializer.cs" />
+    <Compile Include="Helpers\PortableHttpClient.cs" />
+    <Compile Include="Data\TodoistBaseResponse.cs" />
     <Compile Include="MapData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TodoistClient.cs" />

@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace TodoistNet.Core.Data.Commands
+namespace TodoistNet.Core.Commands
 {
     [DataContract]
     public class ProjectCommandArgument : TodoistCommandArgument
