@@ -3,6 +3,8 @@ Todoist API v6 implemented in C#.
 This project **is not** production ready and will have large architectural changes until most of the features are done.
 Most of the features are implemented as I need them for another hobby project.
 
+You'll need to get your access token from Todoist website because login isn't implemented.
+
 This API is supported on following platforms:
 
  - .NET 4.6
