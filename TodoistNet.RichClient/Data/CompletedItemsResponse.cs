@@ -1,13 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace TodoistNet.Core.Data
+namespace TodoistNet.RichClient.Data
 {
-    [DataContract]
     public class CompletedItemsResponse : TodoistBaseResponse
     {
-        [DataMember(Name = "items")]
-        public WebItem[] Items { get; set; }
+        public Item[] Items { get; set; }
 
         // TODO: Parse weird [ id: { projectData } ] JSON structure.
         // It's almost like Dictionary<int, Project> but a bit different.

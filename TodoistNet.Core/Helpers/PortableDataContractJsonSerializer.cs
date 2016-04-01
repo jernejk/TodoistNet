@@ -30,7 +30,7 @@ namespace TodoistNet.Core.Helpers
             {
                 serializer.WriteObject(ms, obj);
 
-                json = Encoding.UTF8.GetString(ms.ToArray());
+                json = Encoding.UTF8.GetString(ms.ToArray(), 0, (int)ms.Length);
             }
 
             return json;

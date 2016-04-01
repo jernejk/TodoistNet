@@ -7,17 +7,17 @@ using TodoistNet.Core.Helpers;
 
 namespace TodoistNet.Core
 {
-    public class TodoistClient
+    public class TodoistWebClient
     {
         private int lastSeqNumber = 0;
         private string token;
         private IJsonSerializer jsonSerializer;
         private IHttpClient httpClient;
         
-        public TodoistClient(string token)
+        public TodoistWebClient(string token)
             : this(token, new PortableHttpClient(), new PortableDataContractJsonSerializer()) { }
 
-        public TodoistClient(string token, IHttpClient httpClient, IJsonSerializer jsonSerializer)
+        public TodoistWebClient(string token, IHttpClient httpClient, IJsonSerializer jsonSerializer)
         {
             this.token = token;
             this.httpClient = httpClient;
@@ -45,7 +45,7 @@ namespace TodoistNet.Core
             return jsonSerializer.Deserialize<CompletedItemsResponse>(content);
         }
 
-        public async Task<TodoistResources> GetAllResourcesAsync(bool mapData = true)
+        public async Task<TodoistWebResources> GetAllResourcesAsync()
         {
             string content = await httpClient.ExecuteRequest(new Uri("https://todoist.com/API/v6/sync"), "SYNC", new Dictionary<string, string>
             {
@@ -56,14 +56,9 @@ namespace TodoistNet.Core
 
             try
             {
-                var result = jsonSerializer.Deserialize<TodoistResources>(content);
+                var result = jsonSerializer.Deserialize<TodoistWebResources>(content);
                 if (result.ContainsErrors)
                     throw TodoistWebException.GenerateFromHttpErrorCode(result.ErrorCode.Value, null);
-
-                if (result != null && mapData)
-                {
-                    MapData.Map(result);
-                }
 
                 return result;
             }

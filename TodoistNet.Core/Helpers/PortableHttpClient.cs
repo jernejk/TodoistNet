@@ -29,9 +29,5 @@ namespace TodoistNet.Core.Helpers
 
             return content;
         }
-
-        private void ThrowIfNotSuccessful(int httpCode)
-        {
-        }
     }
 }

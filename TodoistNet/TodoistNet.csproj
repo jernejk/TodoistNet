@@ -54,6 +54,10 @@
       <Project>{b7c41403-31bd-4d7a-ac51-6b37e7295237}</Project>
       <Name>TodoistNet.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TodoistNet.RichClient\TodoistNet.RichClient.csproj">
+      <Project>{08EA68A9-7324-4FFB-992A-C64CBEA45B16}</Project>
+      <Name>TodoistNet.RichClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

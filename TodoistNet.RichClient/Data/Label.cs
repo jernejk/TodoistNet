@@ -1,24 +1,29 @@
 ﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+using TodoistNet.Core.Data;
 
-namespace TodoistNet.Core.Data
+namespace TodoistNet.RichClient.Data
 {
-    [DataContract]
     public class Label : TodoistObject
     {
-        [DataMember(Name = "uid")]
+        public Label() { }
+
+        public Label(WebLabel label)
+        {
+            Uid = label.Uid;
+            Name = label.Name;
+            Color = label.Color;
+            ItemOrder = label.ItemOrder;
+            IsDeleted = label.IsDeleted;
+        }
+
         public int Uid { get; set; }
 
-        [DataMember(Name = "name")]
         public string Name { get; set; }
 
-        [DataMember(Name = "color")]
         public int Color { get; set; }
 
-        [DataMember(Name = "item_order")]
         public int ItemOrder { get; set; }
 
-        [DataMember(Name = "is_deleted")]
         public int IsDeleted { get; set; }
 
         public List<Item> Items { get; set; }

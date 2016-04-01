@@ -6,14 +6,14 @@ namespace TodoistNet.Core
 {
     public class MapData
     {
-        public static void Map(TodoistResources res)
+        public static void Map(TodoistWebResources res)
         {
             var projects = res.Projects.OrderBy(p => p.ItemOrder);
             var lastProject = projects.First();
             int lastIndent = lastProject.Indent;
             int lastOrder = lastProject.ItemOrder;
 
-            LinkedList<Project> projectParentage = new LinkedList<Project>();
+            LinkedList<WebProject> projectParentage = new LinkedList<WebProject>();
 
             foreach (var project in projects)
             {
@@ -42,11 +42,11 @@ namespace TodoistNet.Core
             }
         }
 
-        private static void UpdateProjectItemsHierarchy(Project project, TodoistResources res)
+        private static void UpdateProjectItemsHierarchy(WebProject project, TodoistWebResources res)
         {
             project.Items = res.Items.Where(i => project.Id == i.ProjectId).ToList();
 
-            foreach (Item item in project.Items)
+            foreach (WebItem item in project.Items)
             {
                 item.Project = project;
                 item.Notes = res.Notes.Where(n => n.ItemId == item.Id).ToList();
@@ -56,13 +56,13 @@ namespace TodoistNet.Core
                     note.Item = item;
                 }
 
-                item.Labels = new List<Label>(0);
+                item.Labels = new List<WebLabel>(0);
                 if (item.LabelIds != null)
                 {
                     item.Labels.Capacity = item.LabelIds.Length;
                     foreach (var labelId in item.LabelIds)
                     {
-                        Label label = res.Labels.FirstOrDefault(l => l.Id == labelId);
+                        WebLabel label = res.Labels.FirstOrDefault(l => l.Id == labelId);
 
                         if (label != null)
                         {
@@ -73,19 +73,19 @@ namespace TodoistNet.Core
             }
         }
 
-        private static void UpdateProjectHierarchy(Project parent, Project child)
+        private static void UpdateProjectHierarchy(WebProject parent, WebProject child)
         {
             child.Parent = parent;
 
             if (parent.Childs == null)
             {
-                parent.Childs = new List<Project>();
+                parent.Childs = new List<WebProject>();
             }
 
             parent.Childs.Add(child);
         }
 
-        private static void UpdateItemLabelRelation(Item item, Label label)
+        private static void UpdateItemLabelRelation(WebItem item, WebLabel label)
         {
             if (label != null)
             {
@@ -93,7 +93,7 @@ namespace TodoistNet.Core
                 
                 if (label.Items == null)
                 {
-                    label.Items = new List<Item>();
+                    label.Items = new List<WebItem>();
                 }
 
                 label.Items.Add(item);

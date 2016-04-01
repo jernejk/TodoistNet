@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace TodoistNet.Core.Data
 {
     [DataContract]
-    public class Item : TodoistObject
+    public class WebItem : TodoistWebObject
     {
         [DataMember(Name = "user_id")]
         public int UserId { get; set; }
@@ -72,10 +72,10 @@ namespace TodoistNet.Core.Data
         [DataMember(Name = "date_added")]
         public string DateAdded { get; set; }
 
-        public Project Project { get; set; }
+        public WebProject Project { get; set; }
 
-        public List<Note> Notes { get; set; }
+        public List<WebNote> Notes { get; set; }
 
-        public List<Label> Labels { get; set; }
+        public List<WebLabel> Labels { get; set; }
     }
 }

@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using TodoistNet.Core;
 using TodoistNet.Core.Commands;
-using TodoistNet.Core.Helpers;
+using TodoistNet.RichClient;
 
 namespace TodoistNet
 {
@@ -11,7 +10,7 @@ namespace TodoistNet
     {
         static void Main(string[] args)
         {
-            TodoistClient client = new TodoistClient("<INSERT TOKEN>");
+            var client = new TodoistClient("<INSERT TOKEN>");
 
             int page = 0;
             while (true)

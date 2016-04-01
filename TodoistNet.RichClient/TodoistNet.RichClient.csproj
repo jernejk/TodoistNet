@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B7C41403-31BD-4D7A-AC51-6B37E7295237}</ProjectGuid>
+    <ProjectGuid>{08EA68A9-7324-4FFB-992A-C64CBEA45B16}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>TodoistNet.Core</RootNamespace>
-    <AssemblyName>TodoistNet.Core</AssemblyName>
+    <RootNamespace>TodoistNet.RichClient</RootNamespace>
+    <AssemblyName>TodoistNet.RichClient</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,32 +39,25 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Commands\TodoistCommands.cs" />
-    <Compile Include="Data\Colors.cs" />
-    <Compile Include="Commands\ItemCommandArgument.cs" />
-    <Compile Include="Commands\LabelCommandArgument.cs" />
-    <Compile Include="Commands\NoteCommandArgument.cs" />
-    <Compile Include="Commands\ProjectCommandArgument.cs" />
     <Compile Include="Data\CompletedItemsResponse.cs" />
-    <Compile Include="Data\WebFilter.cs" />
-    <Compile Include="Data\WebItem.cs" />
-    <Compile Include="Data\WebLabel.cs" />
-    <Compile Include="Data\WebNote.cs" />
-    <Compile Include="Data\WebProject.cs" />
-    <Compile Include="Commands\TodoistCommand.cs" />
-    <Compile Include="Commands\TodoistCommandArgument.cs" />
-    <Compile Include="Data\TodoistWebResources.cs" />
-    <Compile Include="Helpers\IHttpClient.cs" />
-    <Compile Include="Helpers\IJsonSerializer.cs" />
-    <Compile Include="Helpers\PortableDataContractJsonSerializer.cs" />
-    <Compile Include="Helpers\PortableHttpClient.cs" />
     <Compile Include="Data\TodoistBaseResponse.cs" />
+    <Compile Include="Data\TodoistObject.cs" />
+    <Compile Include="Data\TodoistResources.cs" />
+    <Compile Include="Data\Filter.cs" />
+    <Compile Include="Data\Item.cs" />
+    <Compile Include="Data\Label.cs" />
+    <Compile Include="Data\Note.cs" />
+    <Compile Include="Data\Project.cs" />
+    <Compile Include="MapData.cs" />
+    <Compile Include="TodoistClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TodoistWebClient.cs" />
-    <Compile Include="TodoistWebException.cs" />
-    <Compile Include="Data\TodoistWebObject.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TodoistNet.Core\TodoistNet.Core.csproj">
+      <Project>{B7C41403-31BD-4D7A-AC51-6B37E7295237}</Project>
+      <Name>TodoistNet.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

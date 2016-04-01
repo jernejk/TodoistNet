@@ -3,9 +3,9 @@
 namespace TodoistNet.Core.Data
 {
     [DataContract]
-    public class Filter : TodoistObject
+    public class WebFilter : TodoistWebObject
     {
-  [DataMember(Name = "user_id")]
+        [DataMember(Name = "user_id")]
         public int UserId { get; set; }
 
         [DataMember(Name = "name")]

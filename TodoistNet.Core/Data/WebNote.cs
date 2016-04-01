@@ -3,7 +3,7 @@
 namespace TodoistNet.Core.Data
 {
     [DataContract]
-    public class Note : TodoistObject
+    public class WebNote : TodoistWebObject
     {
         [DataMember(Name = "posted_uid")]
         public int PostedUid { get; set; }
@@ -35,8 +35,8 @@ namespace TodoistNet.Core.Data
         [DataMember(Name = "posted")]
         public string Posted { get; set; }
 
-        public Project Project { get; set; }
+        public WebProject Project { get; set; }
 
-        public Item Item { get; set; }
+        public WebItem Item { get; set; }
     }
 }
